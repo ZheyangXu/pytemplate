@@ -1,0 +1,64 @@
+[project]
+name = "pytemplate"
+version = "0.1.0"
+description = "Python template"
+authors = [
+    { name = "ZheyangXu", email = "jishengxzy@hotmail.com" },
+]
+dependencies = []
+requires-python = ">=3.12"
+readme = "README.md"
+license = { text = "MIT" }
+
+[build-system]
+requires      = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
+
+[dependency-groups]
+test = [
+    "coverage>=7.6.10",
+    "pytest>=8.3.4",
+]
+lint = [
+    "black>=24.10.0",
+    "isort>=5.13.2",
+    "ruff>=0.8.6",
+]
+
+[tool.black]
+line-length    = 100
+target-version = ["py312"]
+
+[tool.isort]
+atomic                 = true
+profile                = "black"
+src_paths              = ["src", "tests"]
+extra_standard_library = ["typing_extensions"]
+indent                 = 4
+lines_after_imports    = 2
+multi_line_output      = 3
+
+[tool.ruff]
+lint.select = ["C", "E", "F", "I", "W"]
+lint.ignore = ["C901", "E501", "E741", "F402", "F823"]
+lint.isort  = { lines-after-imports = 2 }
+
+[tool.ruff.format]
+quote-style               = "double"
+indent-style              = "space"
+skip-magic-trailing-comma = false
+line-ending               = "auto"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
+[tool.pdm.scripts]
+lint     = "ruff check"
+test     = "pytest"
+format   = "black src/pytemplate"
+coverage = "coverage run --source=src -m pytest -v tests"
+all      = { composite = ["format", "lint", "test"] }
